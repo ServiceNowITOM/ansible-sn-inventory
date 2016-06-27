@@ -1,9 +1,7 @@
 # ServiceNow Ansible Inventory 
----
 Generates dynamic inventory for Ansible using the ServiceNow CMDB.
 
 # Requirements
----
 - [Ansible](http://docs.ansible.com/intro_getting_started.html)
 - Python [requests](http://docs.python-requests.org/en/master/)
 
@@ -39,6 +37,8 @@ The inventory script makes use of the top level element *\_meta*, introduced in 
 * sn\_sys\_class\_name
 
 Additional hostvars can be added by using the environment variable **SN_FIELDS**.  See usage and syntax in the **Environment** section.
+
+The ServiceNow inventory script leverages cookies to improve performance and prevent multiple sessions being created from repetitive execution. Cookies are stored in **${HOME}/.sn\_api\_session** using the LWP format.
 
 # Environment
 
