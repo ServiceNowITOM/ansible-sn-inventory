@@ -79,3 +79,15 @@ Note: empty fields will be ignored and field values must be the column name, not
 Comma seperated string providing additional table columns to use as groups. Groups can overlap with SN_FIELDS.
 
 > export SN_GROUPS='company,os'
+
+#Example
+
+Once you confirm the dynamic inventory script is working as expected, you can tell Ansible to use the now.py script as an inventory file, as illustrated below:
+
+ansible -i now.py all -m ping
+
+You can narrow the selection using groups created from table columns in the CMDB (default or specified by SN_GROUPS) as illustrated below:
+
+ansible -i now.py linux_server -m ping
+
+If you want to verify the inventory without running the playbook use the --list-hosts flag.
