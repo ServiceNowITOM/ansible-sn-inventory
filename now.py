@@ -24,13 +24,12 @@ class NowInventory(object):
 
 		# requests session
 		self.session = requests.Session()
-		
+
+		self.auth = requests.auth.HTTPBasicAuth(username, password)
 		# request headers
-		token = base64.standard_b64encode("%s:%s" % (username, password))
 		self.headers = {
-			"Accept": "application/json", 
-			"Content-Type": "application/json", 
-			"Authorization": "Basic %s" % token,
+			"Accept": "application/json",
+			"Content-Type": "application/json",
 		}
 
 		# request cookies
@@ -61,7 +60,7 @@ class NowInventory(object):
 		url = "https://%s/%s" % (self.hostname, path)
 
 		# perform REST operation
-		response = self.session.get(url, headers=self.headers)
+		response = self.session.get(url, auth=self.auth, headers=self.headers)
 		if response.status_code != 200:
 			print >> sys.stderr, "http error (%s): %s" % (response.status_code, response.text)
 
