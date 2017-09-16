@@ -14,7 +14,7 @@
 # or implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
-import os, sys, requests, base64, json, re
+import os, sys, requests, base64, json, re, configparser
 from cookielib import LWPCookieJar
 
 class NowInventory(object):
@@ -139,17 +139,46 @@ class NowInventory(object):
 		return json.dumps(self.inventory)
 
 def main(args):
-	instance = os.environ['SN_INSTANCE']
-	username = os.environ['SN_USERNAME']
-	password = os.environ['SN_PASSWORD']
+
+	# instance = os.environ['SN_INSTANCE']
+	# username = os.environ['SN_USERNAME']
+	# password = os.environ['SN_PASSWORD']
+	config = configparser.SafeConfigParser()
+
+        if os.environ.get('NOW_INI', ''):
+                config_files = [os.environ['NOW_INI']]
+        else:
+                config_files = [os.path.abspath(sys.argv[0]).rstrip('.py') + '.ini', 'now.ini']
+
+        for config_file in config_files:
+                if os.path.exists(config_file):
+	                config.read(config_file)
+                        break
+
+        # Read authentication information from environment variables (if set), otherwise from INI file.
+        instance = os.environ.get('SN_INSTANCE')
+        if not instance and config.has_option('auth', 'instance'):
+                instance = config.get('auth', 'instance')
+
+        username = os.environ.get('SN_USERNAME')
+        if not username and config.has_option('auth', 'user'):
+                username = config.get('auth', 'user')
+
+        password = os.environ.get('SN_PASSWORD')
+        if not password and config.has_option('auth', 'password'):
+                password = config.get('auth', 'password')
 
 	# SN_GROUPS
 	groups = os.environ.get("SN_GROUPS", [ ])
+        if not groups and config.has_option('config', 'groups'):
+                groups = config.get('config', 'groups')
 	if isinstance(groups, basestring):
 		groups = groups.split(',')
 
 	# SN_FIELDS
 	fields = os.environ.get("SN_FIELDS", [ ])
+        if not fields and config.has_option('config', 'fields'):
+                fields = config.get('config', 'fields')
 	if isinstance(fields, basestring):
 		fields = fields.split(',')
 
