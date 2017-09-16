@@ -42,7 +42,7 @@ The ServiceNow inventory script leverages cookies to improve performance and pre
 
 # Environment
 
-The ServiceNow inventory script is configured through the now.ini config file or by using environment variables.  **`instance=`**, **`username=`** and **`password=`** must be set in the config file or **`SN_INSTANCE`**, **`SN_USERNAME`**, and **`SN_PASSWORD`** environment variables must be set for the script to successfully query the ServiceNow instance CMDB.  
+The ServiceNow inventory script is configured through the now.ini config file or by using environment variables.  **`instance=`**, **`username=`** and **`password=`** must be set in the config file or **`SN_INSTANCE`**, **`SN_USERNAME`**, and **`SN_PASSWORD`** environment variables must be set for the script to successfully query the ServiceNow instance CMDB. Environment variables will take precedence over config file if both are set. 
 
 **`SN_INSTANCE`** (required)
 
@@ -79,6 +79,14 @@ Note: empty fields will be ignored and field values must be the column name, not
 Comma seperated string providing additional table columns to use as groups. Groups can overlap with `SN_FIELDS`.
 
     export SN_GROUPS='company,os'
+
+**`SN_CACHE_DIR`** (optional)
+
+Path to directory which will be used to store inventory cache (will be created if path does not exist, path is relative to script if not explicit). If not defined caching will be disabled.
+
+**`SN_CACHE_MAX_AGE`** (optional)
+
+Maximum age in seconds of the cache before it will be refreshed with data from the ServiceNow instance CMDB. If not defined will default to 0 (always stale).
 
 # Example
 

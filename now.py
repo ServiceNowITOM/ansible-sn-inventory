@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright 2016 Reuben Stump
+# Copyright 2017 Reuben Stump, Alex Mittell
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # or implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
-import os, sys, requests, base64, json, re, configparser
+import os, sys, requests, base64, json, re, configparser, time
 from cookielib import LWPCookieJar
 
 class NowInventory(object):
@@ -51,10 +51,46 @@ class NowInventory(object):
 
 		return
 
+
+    	def _put_cache(self, name, value):
+        	cache_dir = os.environ.get('SN_CACHE_DIR')
+        	if not cache_dir and config.has_option('defaults', 'cache_dir'):
+            		cache_dir = os.path.expanduser(config.get('defaults', 'cache_dir'))
+		if cache_dir:
+            		if not os.path.exists(cache_dir):
+                		os.makedirs(cache_dir)
+            		cache_file = os.path.join(cache_dir, name)
+            		with open(cache_file, 'w') as cache:
+                		json.dump(value, cache)
+
+    	def _get_cache(self, name, default=None):
+		cache_dir = os.environ.get('SN_CACHE_DIR')
+                if not cache_dir and config.has_option('defaults', 'cache_dir'):
+            		cache_dir = config.get('defaults', 'cache_dir')
+		if cache_dir:
+            		cache_file = os.path.join(cache_dir, name)
+            		if os.path.exists(cache_file):
+				cache_max_age = int(os.environ.get('SN_CACHE_MAX_AGE'))
+                		if not cache_max_age:
+					if config.has_option('defaults', 'cache_max_age'):
+                    				cache_max_age = config.getint('defaults', 'cache_max_age')
+                			else:
+                    				cache_max_age = 0
+                		cache_stat = os.stat(cache_file)
+                		if (cache_stat.st_mtime + cache_max_age) >= time.time():
+                    			with open(cache_file) as cache:
+        					return json.load(cache)
+        	return default
+
 	def __del__(self):
 		self.cookies.save(ignore_discard=True)
 
 	def _invoke(self, verb, path, data):
+
+		cache_name = '__snow_inventory__'
+		inventory = self._get_cache(cache_name, None)
+        	if inventory is not None:
+            		return inventory
 
 		# build url
 		url = "https://%s/%s" % (self.hostname, path)
@@ -64,6 +100,7 @@ class NowInventory(object):
 		if response.status_code != 200:
 			print >> sys.stderr, "http error (%s): %s" % (response.status_code, response.text)
 
+		self._put_cache(cache_name, response.json())
 		return response.json()
 
 	def add_group(self, target, group):
@@ -93,6 +130,7 @@ class NowInventory(object):
 		return
 
 	def generate(self):
+
 		table  = 'cmdb_ci_server'
 		base_fields = ['name','host_name','fqdn','ip_address','sys_class_name']
 		base_groups = ['sys_class_name']
@@ -143,6 +181,7 @@ def main(args):
 	# instance = os.environ['SN_INSTANCE']
 	# username = os.environ['SN_USERNAME']
 	# password = os.environ['SN_PASSWORD']
+	global config 
 	config = configparser.SafeConfigParser()
 
         if os.environ.get('NOW_INI', ''):
