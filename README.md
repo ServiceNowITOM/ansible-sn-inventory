@@ -44,6 +44,12 @@ The ServiceNow inventory script leverages cookies to improve performance and pre
 
 The ServiceNow inventory script is configured through the now.ini config file or by using environment variables.  **`instance=`**, **`username=`** and **`password=`** must be set in the config file or **`SN_INSTANCE`**, **`SN_USERNAME`**, and **`SN_PASSWORD`** environment variables must be set for the script to successfully query the ServiceNow instance CMDB. Environment variables will take precedence over config file if both are set. 
 
+This script will attempt to read configuration from a config file with the same base filename .ini if present, or `now.ini` if not.  It is possible to create symlinks to the inventory script to support multiple configurations.
+
+**`NOW_INI`** (optional)
+
+The path to an INI file may also be specified via this environment variable, in which case the filename matching rules above will not apply.
+
 **`SN_INSTANCE`** (required)
 
 The ServiceNow instance URI. The URI should be the fully-qualified domain name, e.g. 'your-instance.servicenow.com'.
