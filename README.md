@@ -84,7 +84,13 @@ Note: empty fields will be ignored and field values must be the column name, not
 
 Comma seperated string providing additional table columns to use as groups. Groups can overlap with `SN_FIELDS`.
 
-    export SN_GROUPS='company,os'
+    export SN_GROUPS='manufacturer,company,os'
+
+**`SN_SEL_ORDER`** (optional)
+
+Comma seperated string providing ability to define selection preference order. This setting will default to 'host_name,fqdn,ip_address' if not defined.
+
+    export SN_SEL_ORDER='host_name,fqdn,ip_address'
 
 **`SN_CACHE_DIR`** (optional)
 
