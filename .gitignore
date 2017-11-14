@@ -89,4 +89,4 @@ ENV/
 .ropeproject
 
 # IntelliJ IDEA
-.idea
+.idea/
