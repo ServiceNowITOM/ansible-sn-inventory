@@ -75,7 +75,7 @@ class NowInventory(object):
             selection = []
 
         if proxy is None:
-            selection = []
+            proxy = []
 
         # extra fields (table columns)
         self.fields = fields
