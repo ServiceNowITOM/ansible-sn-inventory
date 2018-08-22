@@ -38,7 +38,7 @@ import requests
 import base64
 import json
 import re
-import configparser
+from six.moves import configparser
 import time
 from cookielib import LWPCookieJar
 
