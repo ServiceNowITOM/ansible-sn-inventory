@@ -145,17 +145,24 @@ class NowInventory(object):
 
         # build url
         url = "https://%s/%s" % (self.hostname, path)
+        results = []
 
-        # perform REST operation
-        response = self.session.get(
-            url, auth=self.auth, headers=self.headers, proxies={
-                'http': self.proxy, 'https': self.proxy})
-        if response.status_code != 200:
-            print >> sys.stderr, "http error (%s): %s" % (response.status_code,
-                                                          response.text)
+        while url:
+          print >> sys.stderr, 'url:', url
+          # perform REST operation, accumulating page results
+          response = self.session.get(
+              url, auth=self.auth, headers=self.headers, proxies={
+                  'http': self.proxy, 'https': self.proxy})
+          if response.status_code != 200:
+              print >> sys.stderr, "http error (%s): %s" % (response.status_code,
+                                                            response.text)
+          results += response.json()['result']
+          next_link = response.links.get('next', {})
+          url =  next_link.get('url', None)
 
-        self._put_cache(cache_name, response.json())
-        return response.json()
+        result = { 'result': results }
+        self._put_cache(cache_name, result)
+        return result
 
     def add_group(self, target, group):
         ''' Transform group names:
