@@ -148,7 +148,6 @@ class NowInventory(object):
         results = []
 
         while url:
-          print >> sys.stderr, 'url:', url
           # perform REST operation, accumulating page results
           response = self.session.get(
               url, auth=self.auth, headers=self.headers, proxies={
