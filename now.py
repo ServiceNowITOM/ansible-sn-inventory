@@ -234,7 +234,7 @@ class NowInventory(object):
 
             # groups
             for k in groups:
-                if k == "sys_tags" and record[k] != None and "," in record[k]:
+                if k == "sys_tags" and record[k] != None:
                     for y in [x.strip() for x in record[k].split(',')]:
                         self.add_group(target, y)
                 else:
