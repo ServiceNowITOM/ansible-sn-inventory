@@ -1,4 +1,4 @@
-# ServiceNow Ansible Inventory 
+# ServiceNow Ansible Inventory
 Generates dynamic inventory for Ansible using the ServiceNow CMDB.
 
 # Requirements
@@ -24,7 +24,7 @@ Ansible groups always include the display value of the table column `sys_class_n
 
 Additional groups can be configured using the **`SN_GROUPS`** environment variable. See usage and syntax in the **Environment** section.
 
-You can get a list of exposed groups by inspecting the JSON content of the inventory script. The following shell command leverages the [jq](https://stedolan.github.io/jq/) utility to extract all group names. 
+You can get a list of exposed groups by inspecting the JSON content of the inventory script. The following shell command leverages the [jq](https://stedolan.github.io/jq/) utility to extract all group names.
 
     $ ./now.py  | jq 'del(.\_meta) | keys[]'
 
@@ -42,7 +42,7 @@ The ServiceNow inventory script leverages cookies to improve performance and pre
 
 # Environment
 
-The ServiceNow inventory script is configured through the now.ini config file or by using environment variables.  **`instance=`**, **`username=`** and **`password=`** must be set in the config file or **`SN_INSTANCE`**, **`SN_USERNAME`**, and **`SN_PASSWORD`** environment variables must be set for the script to successfully query the ServiceNow instance CMDB. Environment variables will take precedence over config file if both are set. 
+The ServiceNow inventory script is configured through the now.ini config file or by using environment variables.  **`instance=`**, **`username=`** and **`password=`** must be set in the config file or **`SN_INSTANCE`**, **`SN_USERNAME`**, and **`SN_PASSWORD`** environment variables must be set for the script to successfully query the ServiceNow instance CMDB. Environment variables will take precedence over config file if both are set.
 
 This script will attempt to read configuration from a config file with the same base filename .ini if present, or `now.ini` if not.  It is possible to create symlinks to the inventory script to support multiple configurations.
 
