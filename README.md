@@ -71,6 +71,14 @@ The ServiceNow instance user password.
     export SN_PASSWORD=user.password
 
 
+**`SN_TABLE`** (optional)
+
+The ServiceNow table to query (e.g. cmdb_ci_server, cmdb_ci_netgear, cmdb_ci_win_server, etc.).
+This setting will default to `cmdb_ci_server` if not defined.
+
+    export SN_TABLE=cmdb_ci_server
+
+
 **`SN_FIELDS`** (optional)
 
 Comma seperated string providing additional table columns to add as host vars to each inventory host.

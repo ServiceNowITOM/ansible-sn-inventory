@@ -49,6 +49,7 @@ class NowInventory(object):
             hostname,
             username,
             password,
+            table=None,
             fields=None,
             groups=None,
             selection=None,
@@ -73,6 +74,9 @@ class NowInventory(object):
             pass
         self.session.cookies = self.cookies
 
+        if table is None:
+            table = 'cmdb_ci_server'
+
         if fields is None:
             fields = []
 
@@ -84,6 +88,9 @@ class NowInventory(object):
 
         if proxy is None:
             proxy = []
+
+        # table
+        self.table = table
 
         # extra fields (table columns)
         self.fields = fields
@@ -189,8 +196,6 @@ class NowInventory(object):
 
     def generate(self):
 
-        table = 'cmdb_ci_server'
-        # table = 'cmdb_ci_linux_server'
         base_fields = [
             u'name', u'host_name', u'fqdn', u'ip_address', u'sys_class_name'
         ]
@@ -199,7 +204,7 @@ class NowInventory(object):
 
         columns = list(
             set(base_fields + base_groups + self.fields + self.groups))
-        path = '/api/now/table/' + table + options + \
+        path = '/api/now/table/' + self.table + options + \
             "&sysparm_fields=" + ','.join(columns)
 
         # Default, mandatory group 'sys_class_name'
@@ -280,6 +285,11 @@ def main(args):
     if not password and config.has_option('auth', 'password'):
         password = config.get('auth', 'password')
 
+    # SN_TABLE
+    table = os.environ.get('SN_TABLE')
+    if not table and config.has_option('config', 'table'):
+        table = config.get('config', 'table')
+
     # SN_SEL_ORDER
     selection = os.environ.get("SN_SEL_ORDER", [])
 
@@ -316,6 +326,7 @@ def main(args):
         hostname=instance,
         username=username,
         password=password,
+        table=table,
         fields=fields,
         groups=groups,
         selection=selection,
