@@ -226,8 +226,9 @@ class NowInventory(object):
             if not selection:
                 selection = ['host_name', 'fqdn', 'ip_address']
             for k in selection:
-                if record[k] != '':
-                    target = record[k]
+                if k in record:
+                    if record[k] != '':
+                        target = record[k]
 
             # Skip if no target available
             if target is None:
