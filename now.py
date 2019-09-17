@@ -118,7 +118,7 @@ class NowInventory(object):
                 os.makedirs(cache_dir)
             cache_file = os.path.join(cache_dir, name)
             with open(cache_file, 'w') as cache:
-                json.dump(value, cache)
+                json.dump(value, cache, indent=0, separators=(',', ': '), sort_keys=True)
 
     def _get_cache(self, name, default=None):
         cache_dir = os.environ.get('SN_CACHE_DIR')
