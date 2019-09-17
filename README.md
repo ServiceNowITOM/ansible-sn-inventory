@@ -59,7 +59,7 @@ The ServiceNow instance URI. The URI should be the fully-qualified domain name, 
 
 **`SN_USERNAME`** (required)
 
-The ServiceNow instance user name. The user acount should have enough rights to read the `cmdb_ci_server` table (default), or the table specified by SN_TABLE.
+The ServiceNow instance user name. The user acount should have enough rights to read the `cmdb_ci_server` table (default), or the table specified by `SN_TABLE`.
 
     export SN_USERNAME=user.name
 
