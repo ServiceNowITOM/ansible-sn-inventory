@@ -111,6 +111,14 @@ Maximum age in seconds of the cache before it will be refreshed with data from t
 
     export SN_CACHE_MAX_AGE=3600
 
+
+**`SN_FILTER_RESULTS`** (optional)
+
+Filter results with [**sysparm_query encoded query string syntax**](https://docs.servicenow.com/bundle/newyork-platform-user-interface/page/use/using-lists/task/t_GenEncodQueryStringFilter.html#t_GenEncodQueryStringFilter).  Complete list of [**operators available for filters and queries**](https://docs.servicenow.com/bundle/newyork-platform-user-interface/page/use/common-ui-elements/reference/r_OpAvailableFiltersQueries.html)
+
+    export SN_FILTER_RESULTS=operational_status=1^fqdnISNOTEMPTY
+
+
 **`SN_PROXY`** (optional)
 
 Proxy server to use for requests to ServiceNow. This setting may also be defined with the SN_PROXY environment variable. If not defined no proxy will be used.

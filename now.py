@@ -53,6 +53,7 @@ class NowInventory(object):
             fields=None,
             groups=None,
             selection=None,
+            filter_results=None,
             proxy=None):
         self.hostname = hostname
 
@@ -86,6 +87,9 @@ class NowInventory(object):
         if selection is None:
             selection = []
 
+        if filter_results is None:
+            filter_results = ''
+
         if proxy is None:
             proxy = []
 
@@ -100,6 +104,9 @@ class NowInventory(object):
 
         # selection order
         self.selection = selection
+
+        # filter results (sysparm_query encoded query string)
+        self.filter_results = filter_results
 
         # proxy settings
         self.proxy = proxy
@@ -205,7 +212,8 @@ class NowInventory(object):
         columns = list(
             set(base_fields + base_groups + self.fields + self.groups))
         path = '/api/now/table/' + self.table + options + \
-            "&sysparm_fields=" + ','.join(columns)
+            "&sysparm_fields=" + ','.join(columns) + \
+            "&sysparm_query=" + self.filter_results
 
         # Default, mandatory group 'sys_class_name'
         groups = list(set(base_groups + self.groups))
@@ -318,6 +326,11 @@ def main(args):
     if isinstance(fields, str):
         fields = fields.split(',')
 
+    # SN_FILTER_RESULTS
+    filter_results = os.environ.get('SN_FILTER_RESULTS')
+    if not filter_results and config.has_option('config', 'filter_results'):
+        filter_results = config.get('config', 'filter_results')
+
     # SN_PROXY
     proxy = os.environ.get('SN_PROXY')
     if not proxy and config.has_option('config', 'proxy'):
@@ -331,6 +344,7 @@ def main(args):
         fields=fields,
         groups=groups,
         selection=selection,
+        filter_results=filter_results,
         proxy=proxy)
     inventory.generate()
     print(inventory.json())
