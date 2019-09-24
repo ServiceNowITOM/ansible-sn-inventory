@@ -114,7 +114,7 @@ Maximum age in seconds of the cache before it will be refreshed with data from t
 
 **`SN_FILTER_RESULTS`** (optional)
 
-Filter results with [**sysparm_query encoded query string syntax**](https://docs.servicenow.com/bundle/newyork-platform-user-interface/page/use/using-lists/task/t_GenEncodQueryStringFilter.html#t_GenEncodQueryStringFilter).  Complete list of [**operators available for filters and queries**](https://docs.servicenow.com/bundle/newyork-platform-user-interface/page/use/common-ui-elements/reference/r_OpAvailableFiltersQueries.html)
+Filter results with [**sysparm_query encoded query string syntax**](https://docs.servicenow.com/bundle/newyork-platform-user-interface/page/use/using-lists/task/t_GenEncodQueryStringFilter.html#t_GenEncodQueryStringFilter).  Complete list of [**operators available for filters and queries**](https://docs.servicenow.com/bundle/newyork-platform-user-interface/page/use/common-ui-elements/reference/r_OpAvailableFiltersQueries.html).  URL encoding [**percent signs**](https://github.com/ServiceNowITOM/ansible-sn-inventory/pull/23#issuecomment-534152050) in the filter string need to be doubled in the now.ini config file.
 
     export SN_FILTER_RESULTS=operational_status=1^fqdnISNOTEMPTY
 
