@@ -114,6 +114,7 @@ class NowInventory(object):
         if not cache_dir and config.has_option('defaults', 'cache_dir'):
             cache_dir = os.path.expanduser(config.get('defaults', 'cache_dir'))
         if cache_dir:
+            cache_dir = os.path.join(os.path.dirname(__file__), cache_dir)
             if not os.path.exists(cache_dir):
                 os.makedirs(cache_dir)
             cache_file = os.path.join(cache_dir, name)
@@ -123,8 +124,9 @@ class NowInventory(object):
     def _get_cache(self, name, default=None):
         cache_dir = os.environ.get('SN_CACHE_DIR')
         if not cache_dir and config.has_option('defaults', 'cache_dir'):
-            cache_dir = config.get('defaults', 'cache_dir')
+            cache_dir = os.path.expanduser(config.get('defaults', 'cache_dir'))
         if cache_dir:
+            cache_dir = os.path.join(os.path.dirname(__file__), cache_dir)
             cache_file = os.path.join(cache_dir, name)
             if os.path.exists(cache_file):
                 cache_max_age = os.environ.get('SN_CACHE_MAX_AGE')
