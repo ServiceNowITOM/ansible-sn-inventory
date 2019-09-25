@@ -121,17 +121,19 @@ class NowInventory(object):
         if not cache_dir and config.has_option('defaults', 'cache_dir'):
             cache_dir = os.path.expanduser(config.get('defaults', 'cache_dir'))
         if cache_dir:
+            cache_dir = os.path.join(os.path.dirname(__file__), cache_dir)
             if not os.path.exists(cache_dir):
                 os.makedirs(cache_dir)
             cache_file = os.path.join(cache_dir, name)
             with open(cache_file, 'w') as cache:
-                json.dump(value, cache)
+                json.dump(value, cache, indent=0, separators=(',', ': '), sort_keys=True)
 
     def _get_cache(self, name, default=None):
         cache_dir = os.environ.get('SN_CACHE_DIR')
         if not cache_dir and config.has_option('defaults', 'cache_dir'):
-            cache_dir = config.get('defaults', 'cache_dir')
+            cache_dir = os.path.expanduser(config.get('defaults', 'cache_dir'))
         if cache_dir:
+            cache_dir = os.path.join(os.path.dirname(__file__), cache_dir)
             cache_file = os.path.join(cache_dir, name)
             if os.path.exists(cache_file):
                 cache_max_age = os.environ.get('SN_CACHE_MAX_AGE')
@@ -188,7 +190,7 @@ class NowInventory(object):
             return
 
         group = group.lower()
-        group = re.sub(r' ', '_', group)
+        group = re.sub(r'[^a-zA-Z0-9_]', '_', group)
 
         self.inventory.setdefault(group, {'hosts': []})
         self.inventory[group]['hosts'].append(target)
@@ -248,7 +250,7 @@ class NowInventory(object):
 
             # groups
             for k in groups:
-                if k == "sys_tags" and record[k] != None and "," in record[k]:
+                if k == "sys_tags" and record[k] != None:
                     for y in [x.strip() for x in record[k].split(',')]:
                         self.add_group(target, y)
                 else:
