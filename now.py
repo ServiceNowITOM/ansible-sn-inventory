@@ -40,7 +40,10 @@ import json
 import re
 from six.moves import configparser
 import time
-from cookielib import LWPCookieJar
+try:
+    from cookielib import LWPCookieJar
+except ImportError:
+    from http.cookiejar import LWPCookieJar
 
 
 class NowInventory(object):
