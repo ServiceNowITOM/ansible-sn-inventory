@@ -271,7 +271,7 @@ def main(args):
     # username = os.environ['SN_USERNAME']
     # password = os.environ['SN_PASSWORD']
     global config
-    config = configparser.SafeConfigParser()
+    config = configparser.ConfigParser()
 
     if os.environ.get('NOW_INI', ''):
         config_files = [os.environ['NOW_INI']]
