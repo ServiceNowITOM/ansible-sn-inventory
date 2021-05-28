@@ -1,3 +1,6 @@
+# THIS REPO IS NO LONGER MAINTAINED
+Replaced by the ServiceNow Inventory Plugin available an [Ansible Galaxy](https://galaxy.ansible.com/servicenow/servicenow)
+
 # ServiceNow Ansible Inventory
 Generates dynamic inventory for Ansible using the ServiceNow CMDB.
 
